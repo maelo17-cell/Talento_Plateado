@@ -72,7 +72,7 @@ export function RegisterScreen({ onBack, onRegister }: RegisterScreenProps) {
               <Phone className="w-5 h-5 text-muted-foreground" strokeWidth={2} />
               <input
                 type="tel"
-                placeholder="10 dígitos"
+                placeholder="9 dígitos"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 className="flex-1 bg-transparent focus:outline-none"
