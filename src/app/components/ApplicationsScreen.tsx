@@ -22,125 +22,85 @@ export function ApplicationsScreen({ onBack }: ApplicationsScreenProps) {
       status: 'accepted',
       statusText: 'Aceptada',
       message: '¡Te contactaremos pronto para una entrevista!',
-    },
-    {
-      id: 3,
-      jobTitle: 'Asistente de ventas',
-      company: 'Tienda LocalMart',
-      date: '5 de Mayo, 2026',
-      status: 'rejected',
-      statusText: 'No seleccionada',
-      message: 'Te animamos a seguir buscando',
-    },
-    {
-      id: 4,
-      jobTitle: 'Asistente administrativo',
-      company: 'Consultora ABC',
-      date: '3 de Mayo, 2026',
-      status: 'pending',
-      statusText: 'En revisión',
-    },
+    }
   ];
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'accepted':
-        return <CheckCircle2 className="w-8 h-8" strokeWidth={2} />;
-      case 'rejected':
-        return <XCircle className="w-8 h-8" strokeWidth={2} />;
-      default:
-        return <HourglassIcon className="w-8 h-8" strokeWidth={2} />;
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'accepted':
-        return 'bg-secondary';
-      case 'rejected':
-        return 'bg-muted';
-      default:
-        return 'bg-accent';
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-background pb-6">
+    <div className="min-h-screen bg-slate-50 pb-10 animate-in fade-in duration-300">
+      
       {/* Header */}
-      <div className="bg-primary p-6 sticky top-0 z-10 shadow-md">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={onBack}
-            className="bg-white/20 text-white p-3 rounded-xl hover:bg-white/30 transition-colors active:scale-95"
-            aria-label="Volver"
-          >
-            <ArrowLeft className="w-8 h-8" strokeWidth={2.5} />
+      <div className="bg-brand-pino p-5 sticky top-0 z-10 shadow-md">
+        <div className="flex items-center gap-3">
+          <button onClick={onBack} className="bg-white/10 text-white p-2.5 rounded-xl hover:bg-white/20 transition-colors active:scale-95 border border-white/10">
+            <ArrowLeft className="w-6 h-6" strokeWidth={2.5} />
           </button>
-          <h1 className="text-white text-2xl flex-1">Mis postulaciones</h1>
+          <h1 className="text-white text-xl font-black flex-1">Mis postulaciones</h1>
         </div>
       </div>
 
-      <div className="px-6 space-y-6 mt-6">
-        {/* Resumen */}
-        <div className="bg-card rounded-2xl p-6 shadow-lg border-2 border-border">
-          <p className="text-xl text-center text-muted-foreground leading-relaxed">
+      <div className="p-4 space-y-4">
+        
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
+          <p className="text-base text-center font-bold text-brand-pino">
             Has enviado {applications.length} postulaciones
           </p>
         </div>
 
-        {/* Lista de postulaciones */}
         {applications.map((app) => (
-          <div
-            key={app.id}
-            className="bg-card rounded-2xl p-6 shadow-lg border-2 border-border hover:shadow-xl transition-shadow"
-          >
-            <div className="flex items-start gap-4 mb-4">
-              <div className="bg-primary/10 p-4 rounded-xl">
-                <Building2 className="w-10 h-10 text-primary" strokeWidth={2} />
+          <div key={app.id} className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
+            
+            {/* Título de la postulación */}
+            <div className="flex items-center gap-4 mb-4">
+              <div className="bg-slate-100 p-3 rounded-xl border border-slate-200">
+                <Building2 className="w-8 h-8 text-brand-pino" strokeWidth={2} />
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl mb-2">{app.jobTitle}</h3>
-                <p className="text-muted-foreground text-xl">{app.company}</p>
+                <h3 className="text-xl font-black text-brand-pino leading-tight mb-1">{app.jobTitle}</h3>
+                <p className="text-slate-600 font-bold">{app.company}</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 mb-4 text-muted-foreground">
-              <Clock className="w-6 h-6" strokeWidth={2} />
-              <span className="text-lg">Postulaste el {app.date}</span>
+            <div className="flex items-center gap-2 mb-4 text-slate-500 font-bold text-sm">
+              <Clock className="w-4 h-4" /> Postulaste el {app.date}
             </div>
 
-            <div className={`${getStatusColor(app.status)} text-white rounded-xl p-5 flex items-center gap-4 mb-4`}>
-              {getStatusIcon(app.status)}
-              <div className="flex-1">
-                <p className="text-xl mb-1">Estado: {app.statusText}</p>
-                {app.message && (
-                  <p className="text-white/90 text-lg leading-relaxed">
-                    {app.message}
-                  </p>
-                )}
+            {/* ESTADO DE LA POSTULACIÓN (Con colores de la paleta nueva) */}
+            {app.status === 'pending' ? (
+              <div className="bg-brand-terracota text-white rounded-xl p-4 flex items-center gap-3 mb-4 shadow-sm">
+                <HourglassIcon className="w-6 h-6 shrink-0" />
+                <span className="font-bold text-base flex-1">Estado: {app.statusText}</span>
               </div>
-            </div>
+            ) : (
+              <div className="bg-brand-esmeralda text-white rounded-xl p-4 flex items-start gap-3 mb-4 shadow-sm">
+                <CheckCircle2 className="w-6 h-6 shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-bold text-base block mb-1">Estado: {app.statusText}</span>
+                  <span className="text-white/90 text-sm font-medium leading-tight block">{app.message}</span>
+                </div>
+              </div>
+            )}
 
+            {/* BOTONES INTERACTIVOS */}
             {app.status === 'pending' && (
-              <button className="w-full bg-muted text-foreground py-4 rounded-xl hover:bg-muted/80 transition-colors active:scale-98 text-xl border-2 border-border">
+              <button 
+                onClick={() => alert(`El equipo de ${app.company} está revisando tu perfil. Te avisaremos por SMS si hay novedades.`)}
+                className="w-full bg-white text-brand-pino py-3 rounded-xl active:scale-95 font-black border-2 border-slate-200 hover:border-brand-pino transition-all"
+              >
                 Ver detalles
               </button>
             )}
 
             {app.status === 'accepted' && (
-              <button className="w-full bg-secondary text-white py-4 rounded-xl hover:bg-secondary/90 transition-colors active:scale-98 text-xl">
+              <button 
+                onClick={() => alert('¡Excelente! Hemos notificado a la empresa que estás disponible. Te llamarán pronto.')}
+                className="w-full bg-brand-esmeralda text-white py-3 rounded-xl active:scale-[0.98] hover:bg-green-800 transition-colors font-black shadow-md"
+              >
                 Confirmar disponibilidad
               </button>
             )}
           </div>
         ))}
 
-        {/* Mensaje motivador */}
-        <div className="bg-gradient-to-br from-accent to-primary/70 rounded-2xl p-6 shadow-lg text-white text-center">
-          <p className="text-xl leading-relaxed">
-            Sigue adelante. Cada postulación es un paso más hacia tu próxima oportunidad.
-          </p>
-        </div>
       </div>
     </div>
   );
