@@ -51,7 +51,7 @@ export function RegisterScreen({ onBack, onRegister }: RegisterScreenProps) {
             <label className="block mb-2 font-bold text-slate-700">¿Cómo te llamas?</label>
             <div className="flex items-center gap-3 bg-slate-50 border-2 border-slate-200 rounded-xl px-4 py-3 focus-within:border-brand-pino transition-colors">
               <User className="w-5 h-5 text-slate-400" />
-              <input type="text" placeholder="Ej: Ismael Quispe" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="flex-1 bg-transparent focus:outline-none font-bold text-brand-pino" required />
+              <input type="text" placeholder="Ej: Luis Cuya" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="flex-1 bg-transparent focus:outline-none font-bold text-brand-pino" required />
             </div>
           </div>
 
