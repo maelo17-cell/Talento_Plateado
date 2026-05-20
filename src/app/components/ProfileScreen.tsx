@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { ArrowLeft, Camera, Mic, Video, Briefcase, Award, Phone, Mail } from 'lucide-react';
 
 interface ProfileScreenProps {
@@ -8,8 +8,30 @@ interface ProfileScreenProps {
 export function ProfileScreen({ onBack }: ProfileScreenProps) {
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, []);
 
+  // ESTADOS PARA DARLE VIDA A LA PANTALLA
+  const [phone, setPhone] = useState('');
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const skills = ['Atención al cliente', 'Administración', 'Ventas', 'Cocina'];
   const availableSkills = ['Costura', 'Conducción', 'Jardinería'];
+
+  // REGLA: Solo 9 números exactos
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, ''); 
+    if (value.length <= 9) {
+      setPhone(value);
+    }
+  };
+
+  // REGLA: Cargar imagen desde el celular
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setAvatarPreview(imageUrl);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-50 pb-24 animate-in fade-in duration-300">
@@ -24,20 +46,39 @@ export function ProfileScreen({ onBack }: ProfileScreenProps) {
       </div>
 
       <div className="p-4 space-y-4">
-        {/* Foto de perfil */}
+        
+        {/* FOTO DE PERFIL (Ahora 100% interactiva) */}
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
           <h2 className="text-lg font-black text-brand-pino mb-3">Foto de perfil</h2>
           <div className="flex flex-col items-center gap-3">
-            <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center border-2 border-slate-200">
-              <Camera className="w-8 h-8 text-slate-400" />
+            
+            <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center border-2 border-slate-200 overflow-hidden shadow-inner">
+              {avatarPreview ? (
+                <img src={avatarPreview} alt="Tu perfil" className="w-full h-full object-cover" />
+              ) : (
+                <Camera className="w-8 h-8 text-slate-400" />
+              )}
             </div>
-            <button className="bg-brand-pino text-white px-6 py-3 rounded-xl hover:bg-slate-800 active:scale-95 font-bold shadow-sm text-sm">
-              Subir foto
+            
+            {/* Input oculto que abre la galería/cámara */}
+            <input 
+              type="file" 
+              accept="image/*" 
+              className="hidden" 
+              ref={fileInputRef} 
+              onChange={handleImageUpload} 
+            />
+            
+            <button 
+              onClick={() => fileInputRef.current?.click()} 
+              className="bg-brand-pino text-white px-6 py-3 rounded-xl hover:bg-slate-800 active:scale-95 font-bold shadow-sm text-sm"
+            >
+              {avatarPreview ? 'Cambiar foto' : 'Subir foto'}
             </button>
           </div>
         </div>
 
-        {/* Información personal (Más compacta) */}
+        {/* Información personal (Con límite de 9 dígitos) */}
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 space-y-4">
           <h2 className="text-lg font-black text-brand-pino">Información personal</h2>
 
@@ -50,7 +91,13 @@ export function ProfileScreen({ onBack }: ProfileScreenProps) {
             <label className="block text-sm font-bold text-slate-600 mb-1.5">Teléfono</label>
             <div className="flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus-within:border-brand-pino transition-colors">
               <Phone className="w-5 h-5 text-slate-400" />
-              <input type="tel" placeholder="Tu número" className="flex-1 bg-transparent focus:outline-none font-bold text-brand-pino" />
+              <input 
+                type="tel" 
+                placeholder="9 dígitos exactos" 
+                value={phone}
+                onChange={handlePhoneChange}
+                className="flex-1 bg-transparent focus:outline-none font-bold text-brand-pino" 
+              />
             </div>
           </div>
 
@@ -86,7 +133,7 @@ export function ProfileScreen({ onBack }: ProfileScreenProps) {
           </div>
         </div>
 
-        {/* Habilidades seleccionadas */}
+        {/* Habilidades */}
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
           <div className="flex items-center gap-2 mb-3">
             <Award className="w-6 h-6 text-brand-pino" />
@@ -109,7 +156,6 @@ export function ProfileScreen({ onBack }: ProfileScreenProps) {
           </div>
         </div>
 
-        {/* Botón guardar */}
         <button className="w-full bg-brand-pino text-white py-4 rounded-xl hover:bg-slate-800 active:scale-98 font-black text-lg shadow-md mb-8">
           Guardar cambios
         </button>
