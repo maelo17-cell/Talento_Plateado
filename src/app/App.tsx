@@ -13,7 +13,7 @@ import { ApplicationsScreen } from './components/ApplicationsScreen';
 import { SkillsAssessmentScreen } from './components/SkillsAssessmentScreen';
 
 // AQUÍ ESTÁ LA MAGIA: Importamos los cursos desde el nuevo archivo que acabas de crear
-import { coursesData } from './data/courses';
+import { coursesData } from '../data/courses';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('welcome');
