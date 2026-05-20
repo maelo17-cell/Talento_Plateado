@@ -1,140 +1,72 @@
-import { ArrowLeft, Clock, BarChart3, PlayCircle, CheckCircle2, BookOpen } from 'lucide-react';
-
-interface CourseModule {
-  id: number;
-  title: string;
-  duration: string;
-  completed: boolean;
-}
-
-interface Course {
-  id: number;
-  title: string;
-  icon: any;
-  duration: string;
-  level: string;
-  description: string;
-  detailedDescription: string;
-  modules: CourseModule[];
-  color: string;
-}
+import { ArrowLeft, Clock, BarChart, BookOpen, PlayCircle, CheckCircle2 } from 'lucide-react';
 
 interface CourseDetailScreenProps {
-  course: Course;
+  course: any; // Aquí vendrían los datos del curso
   onBack: () => void;
   onStartCourse: () => void;
 }
 
 export function CourseDetailScreen({ course, onBack, onStartCourse }: CourseDetailScreenProps) {
-  const Icon = course.icon;
-  const completedModules = course.modules.filter(m => m.completed).length;
-  const progress = (completedModules / course.modules.length) * 100;
-
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className={`${course.color} p-6 sticky top-0 z-10 shadow-md`}>
-        <div className="flex items-center gap-3 mb-4">
-          <button
-            onClick={onBack}
-            className="bg-white/20 text-white p-2 rounded-lg hover:bg-white/30 transition-colors active:scale-95"
-            aria-label="Volver"
-          >
-            <ArrowLeft className="w-6 h-6" strokeWidth={2.5} />
+    <div className="min-h-screen bg-slate-50 pb-24 animate-in slide-in-from-right-4 duration-300">
+      
+      {/* CABECERA COLOR TERRACOTA (Para destacar que es un área de aprendizaje) */}
+      <div className="bg-brand-terracota text-white px-4 pt-6 pb-8 rounded-b-[2rem] shadow-md relative">
+        <div className="flex items-center gap-3 mb-6">
+          <button onClick={onBack} className="p-2 -ml-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm transition-colors">
+            <ArrowLeft className="w-6 h-6 text-white" />
           </button>
-          <h1 className="text-white text-xl flex-1">Detalles del curso</h1>
+          <span className="text-sm font-bold uppercase tracking-wider opacity-90">Detalles del curso</span>
         </div>
 
-        {/* Información del curso en header */}
-        <div className="bg-white/10 rounded-xl p-5 backdrop-blur-sm">
-          <div className="flex items-start gap-4 mb-4">
-            <div className="bg-white/20 p-3 rounded-xl">
-              <Icon className="w-10 h-10 text-white" strokeWidth={2} />
-            </div>
-            <div className="flex-1">
-              <h2 className="text-white text-2xl mb-2">{course.title}</h2>
-              <p className="text-white/90 text-lg">{course.description}</p>
-            </div>
+        <div className="flex gap-4 items-center mb-4">
+          <div className="bg-white/20 p-4 rounded-2xl backdrop-blur-sm">
+            <course.icon className="w-10 h-10 text-white" strokeWidth={2} />
           </div>
+          <div>
+            <h1 className="text-2xl font-black leading-tight mb-1">{course.title}</h1>
+            <p className="text-white/80 font-medium text-sm leading-snug">{course.description}</p>
+          </div>
+        </div>
 
-          <div className="flex flex-wrap gap-3">
-            <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-lg">
-              <Clock className="w-5 h-5 text-white" strokeWidth={2} />
-              <span className="text-white">{course.duration}</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-lg">
-              <BarChart3 className="w-5 h-5 text-white" strokeWidth={2} />
-              <span className="text-white">{course.level}</span>
-            </div>
-          </div>
+        <div className="flex gap-3">
+          <span className="flex items-center gap-1.5 bg-black/10 px-3 py-1.5 rounded-lg text-sm font-bold backdrop-blur-sm">
+            <Clock className="w-4 h-4" /> {course.duration}
+          </span>
+          <span className="flex items-center gap-1.5 bg-black/10 px-3 py-1.5 rounded-lg text-sm font-bold backdrop-blur-sm">
+            <BarChart className="w-4 h-4" /> {course.level}
+          </span>
         </div>
       </div>
 
-      <div className="p-6 space-y-6">
-        {/* Progreso del curso */}
-        {completedModules > 0 && (
-          <div className="bg-card rounded-xl p-5 shadow-lg border-2 border-border">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-xl">Tu progreso</h3>
-              <span className="text-primary text-lg">{Math.round(progress)}%</span>
-            </div>
-            <div className="bg-muted rounded-full h-3 overflow-hidden">
-              <div
-                className="bg-primary h-full transition-all duration-500 rounded-full"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <p className="text-muted-foreground mt-2">
-              {completedModules} de {course.modules.length} módulos completados
-            </p>
-          </div>
-        )}
-
-        {/* Descripción completa */}
-        <div className="bg-card rounded-xl p-5 shadow-lg border-2 border-border">
+      {/* CONTENIDO DEL CURSO */}
+      <div className="px-4 -mt-4 relative z-10 space-y-4">
+        
+        {/* TARJETA 1: Sobre este curso */}
+        <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
           <div className="flex items-center gap-2 mb-3">
-            <BookOpen className="w-6 h-6 text-primary" strokeWidth={2} />
-            <h3 className="text-xl">Sobre este curso</h3>
+            <BookOpen className="w-5 h-5 text-brand-pino" />
+            <h2 className="text-lg font-black text-brand-pino">Sobre este curso</h2>
           </div>
-          <p className="text-muted-foreground text-lg leading-relaxed">
+          <p className="text-slate-600 font-medium leading-relaxed">
             {course.detailedDescription}
           </p>
         </div>
 
-        {/* Módulos del curso */}
-        <div className="bg-card rounded-xl p-5 shadow-lg border-2 border-border">
-          <h3 className="text-xl mb-4">Contenido del curso</h3>
+        {/* TARJETA 2: Contenido / Módulos */}
+        <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+          <h2 className="text-lg font-black text-brand-pino mb-4">Contenido del curso</h2>
+          
           <div className="space-y-3">
-            {course.modules.map((module, index) => (
-              <div
-                key={module.id}
-                className={`${
-                  module.completed ? 'bg-secondary/10 border-secondary' : 'bg-muted/30 border-border'
-                } border-2 rounded-xl p-4 transition-all`}
-              >
-                <div className="flex items-start gap-3">
-                  <div className={`${module.completed ? 'bg-secondary' : 'bg-muted'} rounded-full p-2 flex-shrink-0`}>
-                    {module.completed ? (
-                      <CheckCircle2 className="w-6 h-6 text-white" strokeWidth={2.5} />
-                    ) : (
-                      <PlayCircle className="w-6 h-6 text-white" strokeWidth={2} />
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between gap-2 mb-1">
-                      <h4 className="text-lg">
-                        Módulo {index + 1}: {module.title}
-                      </h4>
-                      {module.completed && (
-                        <span className="bg-secondary text-white px-3 py-1 rounded-full text-sm whitespace-nowrap">
-                          Completado
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Clock className="w-4 h-4" strokeWidth={2} />
-                      <span className="text-base">{module.duration}</span>
-                    </div>
+            {course.modules.map((module: any, index: number) => (
+              <div key={module.id} className="flex gap-4 p-3 rounded-xl border border-slate-100 bg-slate-50 items-start">
+                <div className="bg-white text-slate-400 rounded-full w-8 h-8 flex items-center justify-center font-black shadow-sm shrink-0 border border-slate-200">
+                  {index + 1}
+                </div>
+                <div>
+                  <h3 className="font-bold text-brand-pino text-[15px] leading-tight mb-1">{module.title}</h3>
+                  <div className="flex items-center gap-1 text-slate-500 text-xs font-bold">
+                    <Clock className="w-3.5 h-3.5" /> {module.duration}
                   </div>
                 </div>
               </div>
@@ -142,35 +74,18 @@ export function CourseDetailScreen({ course, onBack, onStartCourse }: CourseDeta
           </div>
         </div>
 
-        {/* Beneficios del curso */}
-        <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl p-5 border-2 border-primary/30">
-          <h3 className="text-xl mb-3">¿Qué aprenderás?</h3>
-          <ul className="space-y-2">
-            {course.modules.map((module) => (
-              <li key={module.id} className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" strokeWidth={2} />
-                <span className="text-foreground text-lg">{module.title}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+      </div>
 
-        {/* Mensaje motivador */}
-        <div className="bg-secondary/10 border-2 border-secondary rounded-xl p-5 text-center">
-          <p className="text-foreground text-lg leading-relaxed">
-            Aprende a tu ritmo. Cada módulo está diseñado para ser sencillo y práctico.
-          </p>
-        </div>
-
-        {/* Botón de acción */}
-        <button
+      {/* BOTÓN FLOTANTE INFERIOR */}
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-slate-200 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] md:absolute z-50">
+        <button 
           onClick={onStartCourse}
-          className={`w-full ${course.color} text-white py-5 rounded-xl hover:opacity-90 transition-opacity active:scale-98 shadow-lg flex items-center justify-center gap-3 text-xl`}
+          className="w-full max-w-sm mx-auto bg-brand-pino hover:bg-slate-800 active:scale-[0.98] text-white font-black py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg text-lg"
         >
-          <PlayCircle className="w-8 h-8" strokeWidth={2} />
-          <span>{completedModules > 0 ? 'Continuar curso' : 'Iniciar curso'}</span>
+          <PlayCircle className="w-6 h-6" /> Comenzar primera clase
         </button>
       </div>
+
     </div>
   );
 }
