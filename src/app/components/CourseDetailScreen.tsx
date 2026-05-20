@@ -1,16 +1,23 @@
-import { ArrowLeft, Clock, BarChart, BookOpen, PlayCircle, CheckCircle2 } from 'lucide-react';
+import { useEffect } from 'react';
+import { ArrowLeft, Clock, BarChart, BookOpen, PlayCircle } from 'lucide-react';
 
 interface CourseDetailScreenProps {
-  course: any; // Aquí vendrían los datos del curso
+  course: any;
   onBack: () => void;
   onStartCourse: () => void;
 }
 
 export function CourseDetailScreen({ course, onBack, onStartCourse }: CourseDetailScreenProps) {
+  
+  // ¡AQUÍ ESTÁ LA MAGIA! Esto fuerza a la pantalla a subir al inicio cada vez que se abre
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
+
   return (
     <div className="min-h-screen bg-slate-50 pb-24 animate-in slide-in-from-right-4 duration-300">
       
-      {/* CABECERA COLOR TERRACOTA (Para destacar que es un área de aprendizaje) */}
+      {/* CABECERA */}
       <div className="bg-brand-terracota text-white px-4 pt-6 pb-8 rounded-b-[2rem] shadow-md relative">
         <div className="flex items-center gap-3 mb-6">
           <button onClick={onBack} className="p-2 -ml-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm transition-colors">
@@ -42,7 +49,6 @@ export function CourseDetailScreen({ course, onBack, onStartCourse }: CourseDeta
       {/* CONTENIDO DEL CURSO */}
       <div className="px-4 -mt-4 relative z-10 space-y-4">
         
-        {/* TARJETA 1: Sobre este curso */}
         <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
           <div className="flex items-center gap-2 mb-3">
             <BookOpen className="w-5 h-5 text-brand-pino" />
@@ -53,10 +59,8 @@ export function CourseDetailScreen({ course, onBack, onStartCourse }: CourseDeta
           </p>
         </div>
 
-        {/* TARJETA 2: Contenido / Módulos */}
         <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
           <h2 className="text-lg font-black text-brand-pino mb-4">Contenido del curso</h2>
-          
           <div className="space-y-3">
             {course.modules.map((module: any, index: number) => (
               <div key={module.id} className="flex gap-4 p-3 rounded-xl border border-slate-100 bg-slate-50 items-start">
@@ -77,7 +81,7 @@ export function CourseDetailScreen({ course, onBack, onStartCourse }: CourseDeta
       </div>
 
       {/* BOTÓN FLOTANTE INFERIOR */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-slate-200 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] md:absolute z-50">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-slate-200 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] z-50">
         <button 
           onClick={onStartCourse}
           className="w-full max-w-sm mx-auto bg-brand-pino hover:bg-slate-800 active:scale-[0.98] text-white font-black py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg text-lg"
@@ -85,7 +89,6 @@ export function CourseDetailScreen({ course, onBack, onStartCourse }: CourseDeta
           <PlayCircle className="w-6 h-6" /> Comenzar primera clase
         </button>
       </div>
-
     </div>
   );
 }
