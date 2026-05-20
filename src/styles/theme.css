@@ -33,13 +33,12 @@
   --input-background: #ffffff;
   --ring: var(--brand-terracota);
   
-  --radius: 1.25rem; /* Bordes más redondeados y amigables */
-  --font-weight-medium: 600; /* Letras un poco más gruesas por defecto */
+  --radius: 1.25rem;
+  --font-weight-medium: 600;
   --font-weight-normal: 500;
 }
 
 @theme inline {
-  /* Hacemos que Tailwind reconozca las clases bg-brand-salvia, text-brand-pino, etc. */
   --color-brand-salvia: var(--brand-salvia);
   --color-brand-pino: var(--brand-pino);
   --color-brand-esmeralda: var(--brand-esmeralda);
@@ -56,6 +55,10 @@
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
   --color-border: var(--border);
+  
+  /* 👇 ESTA ES LA LÍNEA QUE ME FALTÓ PONER ANTES 👇 */
+  --color-ring: var(--ring); 
+  
   --radius-xl: var(--radius);
 }
 
