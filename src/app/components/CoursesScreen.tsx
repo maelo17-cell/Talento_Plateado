@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ArrowLeft, Search, Clock, BarChart, PlayCircle } from 'lucide-react';
-import { coursesData } from '../data/courses';
+import { coursesData } from '../../data/courses';
 
 interface CoursesScreenProps {
   onBack: () => void;
