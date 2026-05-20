@@ -1,4 +1,6 @@
-import { ArrowLeft, Smartphone, Mail, MessageSquare, BarChart3, Users, Clock } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ArrowLeft, Search, Clock, BarChart, PlayCircle } from 'lucide-react';
+import { coursesData } from '../data/courses';
 
 interface CoursesScreenProps {
   onBack: () => void;
@@ -6,126 +8,92 @@ interface CoursesScreenProps {
 }
 
 export function CoursesScreen({ onBack, onViewCourse }: CoursesScreenProps) {
-  const courses = [
-    {
-      id: 1,
-      title: 'Uso básico de celular',
-      icon: Smartphone,
-      duration: '2 horas',
-      level: 'Básico',
-      description: 'Aprende a usar tu smartphone paso a paso',
-      recommended: true,
-    },
-    {
-      id: 2,
-      title: 'WhatsApp para el trabajo',
-      icon: MessageSquare,
-      duration: '1 hora',
-      level: 'Básico',
-      description: 'Comunícate efectivamente con WhatsApp',
-      recommended: true,
-    },
-    {
-      id: 3,
-      title: 'Correo electrónico',
-      icon: Mail,
-      duration: '1.5 horas',
-      level: 'Básico',
-      description: 'Envía y recibe correos profesionales',
-      recommended: false,
-    },
-    {
-      id: 4,
-      title: 'Atención al cliente',
-      icon: Users,
-      duration: '3 horas',
-      level: 'Intermedio',
-      description: 'Mejora tus habilidades de servicio',
-      recommended: true,
-    },
-    {
-      id: 5,
-      title: 'Excel básico',
-      icon: BarChart3,
-      duration: '4 horas',
-      level: 'Básico',
-      description: 'Aprende lo esencial de Excel',
-      recommended: false,
-    },
-  ];
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, []);
+
+  const filteredCourses = coursesData.filter(course => 
+    course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    course.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="bg-secondary p-6 sticky top-0 z-10 shadow-md">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={onBack}
-            className="bg-white/20 text-white p-3 rounded-xl hover:bg-white/30 transition-colors active:scale-95"
-            aria-label="Volver"
-          >
-            <ArrowLeft className="w-8 h-8" strokeWidth={2.5} />
+    <div className="min-h-screen bg-slate-50 pb-20 animate-in fade-in duration-300">
+      
+      {/* CABECERA BLANCA (Igual que en Empleos) */}
+      <header className="bg-white px-4 pt-6 pb-4 shadow-sm sticky top-0 z-10">
+        <div className="flex items-center gap-3 mb-4">
+          <button onClick={onBack} className="p-2 -ml-2 rounded-full hover:bg-slate-100 text-brand-pino transition-colors">
+            <ArrowLeft className="w-6 h-6" />
           </button>
-          <h1 className="text-white text-2xl flex-1">Cursos recomendados</h1>
+          <h1 className="text-2xl font-black text-brand-pino">Aprender</h1>
         </div>
-      </div>
 
-      {/* Mensaje motivador */}
-      <div className="bg-accent/20 border-2 border-accent m-6 p-6 rounded-2xl">
-        <p className="text-foreground text-xl text-center leading-relaxed">
-          Aprende a tu ritmo. Cada paso cuenta.
+        {/* Barra de búsqueda */}
+        <div className="relative flex items-center mb-2">
+          <div className="absolute left-3 text-slate-400">
+            <Search className="w-5 h-5" />
+          </div>
+          <input
+            type="text"
+            placeholder="Buscar cursos..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-10 pr-4 py-3.5 bg-slate-100 border border-slate-200 rounded-xl text-brand-pino font-bold focus:outline-none focus:ring-2 focus:ring-brand-esmeralda/50 transition-all text-base"
+          />
+        </div>
+      </header>
+
+      {/* LISTADO DE CURSOS */}
+      <main className="p-4 space-y-4">
+        <p className="text-slate-500 font-bold text-sm px-1">
+          {filteredCourses.length} cursos recomendados para ti
         </p>
-      </div>
 
-      {/* Lista de cursos */}
-      <div className="px-6 pb-6 space-y-5">
-        {courses.map((course) => {
-          const Icon = course.icon;
-          return (
-            <div
-              key={course.id}
-              className={`bg-card rounded-2xl p-6 shadow-lg border-2 ${
-                course.recommended ? 'border-accent' : 'border-border'
-              } hover:shadow-xl transition-shadow relative`}
-            >
-              {course.recommended && (
-                <div className="absolute -top-3 right-4 bg-accent text-white px-4 py-1 rounded-full text-base">
-                  Recomendado para ti
-                </div>
-              )}
-
-              <div className="flex items-start gap-4 mb-4">
-                <div className={`${course.recommended ? 'bg-accent' : 'bg-secondary'} text-white p-4 rounded-xl`}>
-                  <Icon className="w-10 h-10" strokeWidth={2} />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-2xl mb-2">{course.title}</h3>
-                  <p className="text-muted-foreground text-lg leading-relaxed">
-                    {course.description}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-6 mb-4 text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <Clock className="w-5 h-5" strokeWidth={2} />
-                  <span className="text-lg">{course.duration}</span>
-                </div>
-                <span className="bg-muted px-4 py-2 rounded-lg text-lg">
-                  {course.level}
-                </span>
-              </div>
-
-              <button
-                onClick={() => onViewCourse(course.id)}
-                className={`w-full ${course.recommended ? 'bg-accent' : 'bg-secondary'} text-white py-4 rounded-xl hover:opacity-90 transition-opacity active:scale-98 text-xl`}
-              >
-                Ver curso completo
-              </button>
+        {filteredCourses.map((course) => (
+          <div 
+            key={course.id} 
+            onClick={() => onViewCourse(course.id)}
+            className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 cursor-pointer active:scale-[0.98] transition-all hover:border-brand-pino"
+          >
+            {/* Etiqueta Superior */}
+            <div className="flex justify-end mb-2">
+              <span className="bg-orange-50 text-brand-terracota text-[10px] font-black px-2 py-1 rounded-md uppercase tracking-wide border border-orange-200">
+                100% Gratuito
+              </span>
             </div>
-          );
-        })}
-      </div>
+
+            <div className="flex gap-4 mb-4">
+              <div className="bg-slate-100 p-4 rounded-xl border border-slate-200 shrink-0 self-start">
+                <course.icon className="w-8 h-8 text-brand-pino" strokeWidth={2} />
+              </div>
+              <div>
+                <h3 className="text-xl font-black text-brand-pino leading-tight mb-1">{course.title}</h3>
+                <p className="text-sm font-medium text-slate-600 leading-snug">{course.description}</p>
+              </div>
+            </div>
+
+            <div className="flex gap-4 mb-5">
+              <div className="flex items-center text-slate-500 font-bold text-sm">
+                <Clock className="w-4 h-4 mr-1.5" /> {course.duration}
+              </div>
+              <div className="flex items-center text-slate-500 font-bold text-sm">
+                <BarChart className="w-4 h-4 mr-1.5" /> Nivel {course.level}
+              </div>
+            </div>
+
+            <button className="w-full bg-brand-terracota hover:bg-[#c24100] text-white font-black py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md">
+              <PlayCircle className="w-5 h-5" /> Ver curso completo
+            </button>
+          </div>
+        ))}
+
+        {filteredCourses.length === 0 && (
+          <div className="text-center py-10">
+            <p className="text-slate-500 font-bold text-lg">No encontramos cursos con ese nombre.</p>
+          </div>
+        )}
+      </main>
     </div>
   );
 }
