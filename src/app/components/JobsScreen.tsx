@@ -99,7 +99,7 @@ export function JobsScreen({ onBack }: JobsScreenProps) {
           </div>
         </div>
 
-        <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-slate-200 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] z-50">
+        <div className="fixed bottom-[64px] left-0 right-0 p-4 bg-white border-t border-slate-200 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] z-40">
           <button onClick={handleApply} className="w-full max-w-sm mx-auto bg-brand-terracota hover:bg-[#c24100] active:scale-[0.98] text-white font-black py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg text-lg">
             <Zap className="w-6 h-6 fill-current" /> Postularme ahora
           </button>
